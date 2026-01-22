@@ -42,11 +42,11 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Load Model files
-std = joblib.load("model_file/scaler.pkl")
-pca = joblib.load("model_file/pca.pkl")
-kmeans = joblib.load("model_file/kmeans.pkl")
+std = joblib.load("scaler.pkl")
+pca = joblib.load("pca.pkl")
+kmeans = joblib.load("kmeans.pkl")
 
-with open("model_file/features.json", "r") as f:
+with open("features.json", "r") as f:
     scl_features = json.load(f)
 
 # Feature Engineering
@@ -172,4 +172,5 @@ if st.button("Predict Clusters"):
             data=csv_data,
             file_name="customer_clusters_output.csv",
             mime="text/csv"
+
         )
