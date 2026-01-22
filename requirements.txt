@@ -4,6 +4,6 @@ numpy
 joblib
 scikit-learn
 matplotlib
-openxyl
+
 
 
