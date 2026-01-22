@@ -5,7 +5,7 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from datetime import datetime
 # Page Settings
 st.set_page_config(page_title="Customer Segmentation", page_icon="📊", layout="wide")
 
@@ -42,17 +42,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Load Model files
-std = joblib.load("scaler.pkl")
-pca = joblib.load("pca.pkl")
-kmeans = joblib.load("kmeans.pkl")
+std = joblib.load("model_file/scaler.pkl")
+pca = joblib.load("model_file/pca.pkl")
+kmeans = joblib.load("model_file/kmeans.pkl")
 
-with open("features.json", "r") as f:
+with open("model_file/features.json", "r") as f:
     scl_features = json.load(f)
 
 # Feature Engineering
 def feature_engineering(df):
     df = df.copy()
     # Create TotalSpend
+    current_year = datetime.now().year
+    df['Age'] = current_year - df['Year_Birth']
+    df.drop(columns=['Year_Birth'], inplace=True)
+    df['Children'] = df['Kidhome'] + df['Teenhome']
     df["TotalSpend"] = (
         df["MntWines"] + df["MntFruits"] + df["MntMeatProducts"]
         + df["MntFishProducts"] + df["MntSweetProducts"] + df["MntGoldProds"]
@@ -172,5 +176,4 @@ if st.button("Predict Clusters"):
             data=csv_data,
             file_name="customer_clusters_output.csv",
             mime="text/csv"
-
         )
